@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ukrainian Radio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      #playlist li a {
+        color: black;
+        font-family: "Times New Roman", Times, serif;
+        text-decoration: none;
+      }
+      #playlist .current-song a {
+        color: rgb(0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <audio src="" controls id="audioPlayer"></audio>
+    <ol id="playlist">
+      <li class="current-song">
+        <a href="http:\\online.hitfm.ua\HitFM">ХітФМ</a>
+      </li>
+      <li><a href="http:\\online.radioroks.ua\RadioROKS">RadioROKS</a></li>
+      <li>
+        <a href="http:\\online.nasheradio.ua\NasheRadio">Наше Радіо Україна</a>
+      </li>
+      <li><a href="http:\\online.melodiafm.ua\MelodiaFM">Мелодія ФМ</a></li>
+    </ol>
+    <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+    <script>
+      audioPlayer();
+      function audioPlayer() {
+        $("#audioPlayer")[0].src = $("playlist li a")[0];
+        $("#audioPlayer")[0].play();
+        $("#playlist li a").click(function (e) {
+          e.preventDefault();
+          $("#audioPlayer")[0].src = this;
+          $("#audioPlyer")[0].play();
+          $("playlist li").removeClass("current-song");
+          currentSong = $(this).parent().index();
+          $(this).parent().addClass("current-song");
+        });
+
+        $("#audioPlayer")[0].addEventListener("ended", function () {
+          currentSong++;
+          if (currentSong == $("#playlist li a").length) currentSong = 0;
+          $("#playlist li").removeClass("current-song");
+          $("#playlist li:eq(" + currentSong + ")").addClass("current-song");
+          $("audioPlayer")[0].src = $("#playlist li a")[currentSong].href;
+          $("#audioPlayer")[0].play();
+        });
+      }
+    </script>
+  </body>
+</html>
